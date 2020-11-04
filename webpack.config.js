@@ -10,18 +10,18 @@ const jsLoaders = () => {
     const loaders = [{
         loader: 'babel-loader',
         options: {
-            presets: ['@babel/preset-env']
-        }
-    }
-    ]
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
+        },
+    },
+    ];
     if (isDev) {
         loaders.push('eslint-loader');
     }
     return loaders;
 };
 
-const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}}`;
-
+const filename = (ext) => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}}`;
 
 
 module.exports = {
@@ -30,14 +30,11 @@ module.exports = {
     entry: ['@babel/polyfill', './index.js'],
     output: {
         filename: filename('js'),
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
     },
     resolve: {
         extensions: ['.js'],
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
-            '@core': path.resolve(__dirname, 'src/core'),
-        },
+
     },
     devtool: isDev ? 'source-map' : false,
     devServer: {
@@ -60,14 +57,14 @@ module.exports = {
             patterns: [
                 {
                     from: path.resolve(__dirname, 'src/favicon.ico'),
-                    to: path.resolve(__dirname, 'dist')
+                    to: path.resolve(__dirname, 'dist'),
                 },
 
             ],
         }),
         new MiniCssExtractPlugin({
             filename: filename('css'),
-        })
+        }),
     ],
     module: {
         rules: [
@@ -78,10 +75,10 @@ module.exports = {
                     options: {
                         hmr: isDev,
                         reloadAll: true,
-                    }
+                    },
                 },
                     'css-loader',
-                    'sass-loader',]
+                    'sass-loader'],
 
             },
             {
@@ -89,7 +86,7 @@ module.exports = {
                 exclude: /node_modules/,
                 use: jsLoaders(),
 
-            }
+            },
         ],
-    }
-}
+    },
+};
